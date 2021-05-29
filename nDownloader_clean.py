@@ -26,7 +26,8 @@ try:
     else:
         print(" [!] Error. Invalid operative system, exiting...")
         exit(1)
-    URL = input(" [i] Welcome to nDownloader! Press any key to start... ")
+    start_program = input(" [i] Welcome to nDownloader! Press any key to start... ")
+    print("     Starting at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
 except KeyboardInterrupt:
     print()
@@ -51,7 +52,7 @@ try:
             nID = "".join(random.choice(string.digits) for i in range(7))
             pageNumber = 1
         nURL = "https://i.nhentai.net/galleries/" + nID + "/" + str(pageNumber) + ".jpg"
-        try:
+                try:
             r = requests.get(nURL, allow_redirects=True)
             images = {"image/jpeg"}
             if r.headers["content-type"] not in images:
@@ -73,11 +74,13 @@ try:
                 pageNumber += 1
         except Exception as e:
             print(" %s%s[!] An error ocurred: %s%s" % (Style.BRIGHT, Fore.RED, Style.RESET_ALL, e))
+            print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
             print()
             exit(1)
 except KeyboardInterrupt:
     print()
     print(" Detected Ctrl+C. Shutting down...")
+    print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
     exit(1)
 
