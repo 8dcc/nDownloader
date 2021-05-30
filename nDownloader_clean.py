@@ -1,4 +1,4 @@
-import os, requests, base64, random, string, sys
+import os, requests, base64, random, string, sys, time
 from colorama import Fore, Style
 
 ############ EDIT ME ############
@@ -21,17 +21,21 @@ try:
         print(Style.RESET_ALL, Style.BRIGHT, Fore.WHITE)
         banner()
         print(Style.RESET_ALL, Fore.MAGENTA)
-        print(str(base64.b64decode(sig)))
         print(Style.RESET_ALL)
     else:
         print(" [!] Error. Invalid operative system, exiting...")
         exit(1)
     start_program = input(" [i] Welcome to nDownloader! Press any key to start... ")
     print("     Starting at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+    with open("nDownloaded.log", "a") as nLog:  # Append to the log file
+      nLog.write("[%s] User started.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
 except KeyboardInterrupt:
     print()
     print(" Detected Ctrl+C. Shutting down...")
+    print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+    with open("nDownloaded.log", "a") as nLog:  # Append to the log file
+      nLog.write("[%s] User stopped.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
     exit(1)
 
@@ -52,7 +56,7 @@ try:
             nID = "".join(random.choice(string.digits) for i in range(7))
             pageNumber = 1
         nURL = "https://i.nhentai.net/galleries/" + nID + "/" + str(pageNumber) + ".jpg"
-                try:
+        try:
             r = requests.get(nURL, allow_redirects=True)
             images = {"image/jpeg"}
             if r.headers["content-type"] not in images:
@@ -70,17 +74,24 @@ try:
                     sys.stdout.write('\b'*50)
                     sys.stdout.flush()
                     print(" [+] Request for " + str(nID) + " is good.")
+                    with open("nDownloaded.log", "a") as nLog:  # Append to the log file
+                        nLog.write("[%s] Dowloading: %s" % (time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()), nID))  # Write the date and the ID downloaded.
+                        nLog.write("\n")
                     sys.stdout.write(" [-] Request for ")
                 pageNumber += 1
         except Exception as e:
             print(" %s%s[!] An error ocurred: %s%s" % (Style.BRIGHT, Fore.RED, Style.RESET_ALL, e))
             print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+            with open("nDownloaded.log", "a") as nLog:  # Append to the log file
+                nLog.write("[%s] Exception: %s \n" % (time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()), e))
             print()
             exit(1)
 except KeyboardInterrupt:
     print()
     print(" Detected Ctrl+C. Shutting down...")
     print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+    with open("nDownloaded.log", "a") as nLog:  # Append to the log file
+      nLog.write("[%s] User stopped.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
     exit(1)
 
