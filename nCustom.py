@@ -66,8 +66,8 @@ try:
                     print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))  # Display when the program stopped
                     exit(1)
             elif r.headers["content-type"] in images:
-                os.system("echo.> nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # ID + _ + number.jpg  -->  1233212_5.jpg
-                PATH = "nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg"  # Same as above
+                os.system("echo.> nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # Create the empty file. ID + _ + number.jpg  -->  1233212_5.jpg
+                PATH = "nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg"  # Store the path in a variable
                 open(str(PATH), "wb").write(r.content)  # Write the contents on the files
                 if pageNumber == 1:  # If the page we are downloading is the first one (AKA this will execute once per id)
                     print()
