@@ -1,8 +1,17 @@
-import os, requests, base64, random, string, sys, time
-from colorama import Fore, Style
+# nDownloader_clean  -  https://github.com/r4v10l1
+
+try:
+    import os, requests, base64, random, string, sys, time
+    from colorama import Fore, Style
+except Exception:
+    print()
+    print(" [!] There was an error importing the necesary modules: os, requests, base64, random, string, sys, time, colorama")
+    print()
+    exit(1)
 
 ############ EDIT ME ############
 operative_system = "win"        #  << Put here win or lin
+useTorProxy = True             #  << Put here True or False
 #################################
 
 def banner():
@@ -10,6 +19,19 @@ def banner():
     print(" .-----.|     \\.-----.--.--.--.-----.|  |.-----.---.-.--|  |.-----.----.")
     print(" |     ||  --  |  _  |  |  |  |     ||  ||  _  |  _  |  _  ||  -__|   _|")
     print(" |__|__||_____/|_____|________|__|__||__||_____|___._|_____||_____|__|  ")
+
+if useTorProxy == False:
+    proxies = ""
+elif useTorProxy == True:
+    proxies = {
+        'http': 'socks5://127.0.0.1:9150',
+        'https': 'socks5://127.0.0.1:9150'
+    }
+else:
+    print()
+    print(" [!] Error. Invalid proxy. Exiting...")
+    print()
+    exit(1)
 
 try:
     if operative_system == "win"    :
@@ -49,15 +71,17 @@ try:
         print()
         print(" [!] Error. Invalid operative system, exiting...")
         print()
+        exit(1)
     has_ended = True
     sys.stdout.write(" [-] Request for ")
     while True:
         if has_ended == True:
-            nID = "".join(random.choice(string.digits) for i in range(7))
+            nID = "".join(random.choice(string.digits) for i in range(6))
+            nID = "1%s" % nID
             pageNumber = 1
         nURL = "https://i.nhentai.net/galleries/" + nID + "/" + str(pageNumber) + ".jpg"
         try:
-            r = requests.get(nURL, allow_redirects=True)
+            r = requests.get(nURL, proxies=proxies, allow_redirects=True)
             images = {"image/jpeg"}
             if r.headers["content-type"] not in images:
                 sys.stdout.write(nID + " is bad.")
@@ -80,7 +104,7 @@ try:
                     sys.stdout.write(" [-] Request for ")
                 pageNumber += 1
         except Exception as e:
-            print(" %s%s[!] An error ocurred: %s%s" % (Style.BRIGHT, Fore.RED, Style.RESET_ALL, e))
+            print(" [!] An error ocurred: %s" % e)
             print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
             with open("nDownloaded.log", "a") as nLog:  # Append to the log file
                 nLog.write("[%s] Exception: %s \n" % (time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()), e))
