@@ -11,7 +11,7 @@ except Exception:
 
 ############ EDIT ME ############
 operative_system = "win"        #  << Put here win or lin
-useTorProxy = True             #  << Put here True or False
+useTorProxy = False             #  << Put here True or False
 #################################
 
 def banner():
