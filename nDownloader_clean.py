@@ -10,7 +10,7 @@ except Exception:
     exit(1)
 
 ############ EDIT ME ############
-operative_system = "win"        #  << Put here win or lin
+operative_system = "lin"        #  << Put here win or lin
 useTorProxy = False             #  << Put here True or False
 #################################
 
@@ -39,7 +39,7 @@ try:
         banner()
         print()
 
-    elif operative_system == lin:
+    elif operative_system == "lin":
         print(Style.RESET_ALL, Style.BRIGHT, Fore.WHITE)
         banner()
         print(Style.RESET_ALL, Fore.MAGENTA)
@@ -90,9 +90,14 @@ try:
                 has_ended = True
             elif r.headers["content-type"] in images:
                 has_ended = False
-                os.system("echo.> nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")
+                if operative_system == "win":
+                    os.system("echo.> nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # Create the empty file on windows
+                elif operative_system == "lin":
+                    os.system("touch nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # Create the empty file on linux
+                else:
+                	exit(" Operative system error. Exiting...")
                 PATH = "nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg"
-                open(str(PATH), "wb").write(r.content)
+                open(str(PATH), "wb").write(r.content)  # Write the request content (Image) into the empty file
                 if pageNumber == 1:
                     print()
                     sys.stdout.write('\b'*50)
