@@ -1,5 +1,6 @@
 import os, requests, base64, random, string, sys, time
 from colorama import Fore, Style
+from bs4 import BeautifulSoup
 
 ############ EDIT ME ############
 operative_system = "win"        #  << Put here win or lin
@@ -28,34 +29,42 @@ try:
         exit(1)
     print("     Starting at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
 
-except KeyboardInterrupt:  # Detects if user ctrl + c while checking the os
+except KeyboardInterrupt:
     print()
     print(" Detected Ctrl+C. Shutting down...")
     print()
     exit(1)
 
 try:
-    if operative_system == "win":
-        pass  # I'm too lazy to check if the folder exists
-    elif operative_system == "lin":
-        os.system("rm -r nDownloads")  # Remove the folder
-        os.system("mkdir nDownloads")  # Make the folder
+    if operative_system == "lin":
+        os.system("rm -r nDownloads")
+        os.system("mkdir nDownloads")
     print()
-    nID = input(" [?] Write here your image ID: ")  # The image ID, not the sauce. See README.md to see what I mean
-    if len(nID) != 7:  # Check if the ID length is 7
+    nID = input(" [?] Write here your sauce/image ID: ")
+    if len(nID) != 6 and len(nID) != 7:
         print()
         print(" [!] Invalid ID. Length must be 7 . Exiting...")
         print()
         exit(1)
-    pageNumber = 1  # Start by trying to download page 1 before the loop adds more pages
+    pageNumber = 1
+    if len(nID) == 6:  # Get the image id from the sauce page
+        URL = "https://nhentai.net/g/" + nID + "/1/"
+        r = requests.get(URL)
+        souped = BeautifulSoup(r.text, 'html.parser')
+        try:
+            nID = souped.findAll('img')[1].get('src').split("/")[4]
+        except Exception as e:
+            print(" ID error. Check nCustom_debug.log for details.")
+            with open("nCustom_debug.log", "w") as nLog:
+                nLog.write(e)
+            exit(1)
     while True:
-        nURL = "https://i.nhentai.net/galleries/" + nID + "/" + str(pageNumber) + ".jpg"  # Base URL + ID + number.jpg
+        nURL = "https://i.nhentai.net/galleries/" + nID + "/" + str(pageNumber) + ".jpg"
         try:
             r = requests.get(nURL, allow_redirects=True)
-            images = {"image/jpeg"}  # Check if the request gives a image (AKA the id is correct and there are no erros)
-            if r.headers["content-type"] not in images:  # Check if we did not get an image from the request
-                if pageNumber == 1:  # If the request did not get an image and the page is 1.
-#                                      That means it didnt download a single page, so the id is wrong.
+            images = {"image/jpeg"}
+            if r.headers["content-type"] not in images:
+                if pageNumber == 1:
                     print()
                     print(" [!] Error. ID not found. Exiting...")
                     print()
@@ -66,7 +75,12 @@ try:
                     print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))  # Display when the program stopped
                     exit(1)
             elif r.headers["content-type"] in images:
-                os.system("echo.> nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # Create the empty file. ID + _ + number.jpg  -->  1233212_5.jpg
+                if operative_system == "win":
+                    os.system("echo.> nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # Create the empty file on windows
+                elif operative_system == "lin":
+                    os.system("touch nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # Create the empty file on linux
+                else:
+                    exit(" Operative system error. Exiting...")
                 PATH = "nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg"  # Store the path in a variable
                 open(str(PATH), "wb").write(r.content)  # Write the contents on the files
                 if pageNumber == 1:  # If the page we are downloading is the first one (AKA this will execute once per id)
