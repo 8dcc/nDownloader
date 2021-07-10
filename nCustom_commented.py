@@ -1,4 +1,4 @@
-import os, requests, base64, random, string, sys, time
+import os, requests, base64, random, sys, time
 from colorama import Fore, Style
 
 ############ EDIT ME ############
