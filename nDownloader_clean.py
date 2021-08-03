@@ -10,15 +10,15 @@ except Exception:
     exit(1)
 
 ############ EDIT ME ############
-operative_system = "lin"        #  << Put here win or lin
+operative_system = "win"        #  << Put here win or lin
 useTorProxy = False             #  << Put here True or False
 #################################
 
 def banner():
-    print("         _____                        __                 __             ")
-    print(" .-----.|     \\.-----.--.--.--.-----.|  |.-----.---.-.--|  |.-----.----.")
-    print(" |     ||  --  |  _  |  |  |  |     ||  ||  _  |  _  |  _  ||  -__|   _|")
-    print(" |__|__||_____/|_____|________|__|__||__||_____|___._|_____||_____|__|  ")
+    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.WHITE}         _____                        __                 __             ")
+    print(f"{Fore.RED} .-----.{Fore.WHITE}|     \\.-----.--.--.--.-----.|  |.-----.---.-.--|  |.-----.----.")
+    print(f"{Fore.RED} |     |{Fore.WHITE}|  --  |  _  |  |  |  |     ||  ||  _  |  _  |  _  ||  -__|   _|")
+    print(f"{Fore.RED} |__|__|{Fore.WHITE}|_____/|_____|________|__|__||__||_____|___._|_____||_____|__|  {Style.RESET_ALL}\n")
 
 if useTorProxy == False:
     proxies = ""
@@ -29,35 +29,23 @@ elif useTorProxy == True:
     }
 else:
     print()
-    print(" [!] Error. Invalid proxy. Exiting...")
+    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} [!] Error. Invalid proxy. Exiting...{Style.RESET_ALL} ")
     print()
     exit(1)
 
 try:
-    if operative_system == "win"    :
-        print()
-        banner()
-        print()
-
-    elif operative_system == "lin":
-        print(Style.RESET_ALL, Style.BRIGHT, Fore.WHITE)
-        banner()
-        print(Style.RESET_ALL, Fore.MAGENTA)
-        print(Style.RESET_ALL)
-    else:
-        print(" [!] Error. Invalid operative system, exiting...")
-        exit(1)
-    start_program = input(" [i] Welcome to nDownloader! Press any key to start... ")
-    print("     Starting at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+    banner()
+    start_program = input(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.BLUE} [i] Welcome to nDownloader! Press any key to start...{Style.RESET_ALL} ")
+    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.BLUE}     Starting at{Style.RESET_ALL}{Fore.BLUE} " + time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()) + f"{Style.RESET_ALL} ")
     with open("nDownloaded.log", "a") as nLog:  # Append to the log file
-      nLog.write("[%s] User started.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+        nLog.write("[%s] User started.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
 except KeyboardInterrupt:
     print()
-    print(" Detected Ctrl+C. Shutting down...")
-    print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} Detected Ctrl+C. Shutting down...{Style.RESET_ALL} ")
+    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} Stopped at{Style.RESET_ALL}{Fore.RED} "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()) + f"{Style.RESET_ALL} ")
     with open("nDownloaded.log", "a") as nLog:  # Append to the log file
-      nLog.write("[%s] User stopped.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+        nLog.write("[%s] User stopped.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
     exit(1)
 
@@ -69,11 +57,11 @@ try:
         os.system("mkdir nDownloads")
     else:
         print()
-        print(" [!] Error. Invalid operative system, exiting...")
+        print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} [!] Error. Invalid operative system, exiting...{Style.RESET_ALL} ")
         print()
         exit(1)
     has_ended = True
-    sys.stdout.write(" [-] Request for ")
+    first_time = True
     while True:
         if has_ended == True:
             nID = "".join(random.choice(string.digits) for i in range(6))
@@ -84,7 +72,10 @@ try:
             r = requests.get(nURL, proxies=proxies, allow_redirects=True)
             images = {"image/jpeg"}
             if r.headers["content-type"] not in images:
-                sys.stdout.write(nID + " is bad.")
+                if first_time:
+                    sys.stdout.write(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.WHITE} [{Fore.RED}-{Fore.WHITE}] Request for ")
+                    first_time = False
+                sys.stdout.write(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED}{nID}" + f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.WHITE} is bad.")
                 sys.stdout.write('\b'*15)
                 sys.stdout.flush()
                 has_ended = True
@@ -95,32 +86,35 @@ try:
                 elif operative_system == "lin":
                     os.system("touch nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg")  # Create the empty file on linux
                 else:
-                	exit(" Operative system error. Exiting...")
+                	exit(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} Operative system error. Exiting...{Style.RESET_ALL} ")
                 PATH = "nDownloads/" + str(nID) + "_" + str(pageNumber) + ".jpg"
                 open(str(PATH), "wb").write(r.content)  # Write the request content (Image) into the empty file
                 if pageNumber == 1:
-                    print()
+                    if not first_time:
+                        print()
                     sys.stdout.write('\b'*50)
                     sys.stdout.flush()
-                    print(" [+] Request for " + str(nID) + " is good.")
+                    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.WHITE} [{Fore.GREEN}+{Fore.WHITE}] Request for{Fore.GREEN} " + str(nID) + f"{Fore.WHITE} is good.{Style.RESET_ALL} ")
                     with open("nDownloaded.log", "a") as nLog:  # Append to the log file
                         nLog.write("[%s] Dowloading: %s" % (time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()), nID))  # Write the date and the ID downloaded.
                         nLog.write("\n")
-                    sys.stdout.write(" [-] Request for ")
+                    first_time = True
                 pageNumber += 1
         except Exception as e:
-            print(" [!] An error ocurred: %s" % e)
-            print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+            print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} [!] An error ocurred:{Style.RESET_ALL} {e}")
+            print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} Stopped at{Style.RESET_ALL}{Fore.RED} "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()) + f"{Style.RESET_ALL} ")
             with open("nDownloaded.log", "a") as nLog:  # Append to the log file
                 nLog.write("[%s] Exception: %s \n" % (time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()), e))
             print()
             exit(1)
 except KeyboardInterrupt:
+    sys.stdout.write('\b'*15)
+    sys.stdout.flush()
     print()
-    print(" Detected Ctrl+C. Shutting down...")
-    print(" Stopped at "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} Detected Ctrl+C. Shutting down...{Style.RESET_ALL} ")
+    print(f"{Style.RESET_ALL}{Style.BRIGHT}{Fore.RED} Stopped at{Style.RESET_ALL}{Fore.RED} "+ time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()) + f"{Style.RESET_ALL} ")
     with open("nDownloaded.log", "a") as nLog:  # Append to the log file
-      nLog.write("[%s] User stopped.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
+        nLog.write("[%s] User stopped.\n" % time.strftime("%d %b %Y - %H:%M:%S", time.gmtime()))
     print()
     exit(1)
 
