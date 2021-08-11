@@ -51,8 +51,8 @@ def main():
         print()
         exit(1)
 
-    if not os.path.isfile(os.path.realpath(__file__) + "\\nDownloads"):
-        os.makedirs(os.path.realpath(__file__) + "\\nDownloads")
+    if not os.path.exists(os.path.abspath(os.path.dirname(__file__)).replace("\\", "/") + "/nDownloads"):
+        os.makedirs(os.path.abspath(os.path.dirname(__file__)).replace("\\", "/") + "/nDownloads")
 
     has_ended = True
     first_time = True
