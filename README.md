@@ -22,13 +22,12 @@ python nDownloader_clean.py
 
 ### Configuration
 
-* You can edit the `debugPrint` variable to print some extra stuff.
+* You can edit the `operative_system` variable to add some more colors in linux.
 * You can edit the `useTorProxy` variable to enable the use of a proxy during the requests. If you enable this, you will need to have tor open and the port it will use will be **9150**.
-* You can edit the `sessionMode` variable to store the cookies.
 
 ### Logs
 
 The script writes the following information into a log (`nDownloaded.log`):
-* When the user starts the program.
-* When the user stops the program.
-* When the script detects an error.
+* When the user starts the program
+* When the user stops the program
+* When the script downloads something. (It will write a line per id, not per image)
