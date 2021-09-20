@@ -1,4 +1,4 @@
-# Homework 2
+# nDownloader
 Nothing to see here again... Now optimized. It is a python script that downloads lots of hentai images based on random ids from [nhentai](https://nhentai.net).
 
 With `nDownloder.py`, it writes one line per request. Use `nDownloader_clean.py` for a much cleaner look.
@@ -14,8 +14,8 @@ Although the download rate will be slower, the `useTorProxy` option is recomende
 ### Installing
 
 ``` shell
-git clone https://github.com/r4v10l1/homework2/
-cd homework2
+git clone https://github.com/r4v10l1/nDownloader/
+cd nDownloader
 python -m pip install -r requirements.txt
 python nDownloader_clean.py
 ```
