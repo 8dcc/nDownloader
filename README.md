@@ -32,3 +32,8 @@ The script writes the following information into a log (`nDownloaded.log`):
 * When the user starts the program
 * When the user stops the program
 * When the script downloads something. (It will write a line per id, not per image)
+
+#
+
+### Screenshots
+![ncustom :^)](images/ncustom.png)
