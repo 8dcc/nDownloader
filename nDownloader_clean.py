@@ -61,7 +61,7 @@ def main():
         while True:
             if has_ended == True:
                 nID = "".join(random.choice(string.digits) for i in range(6))
-                nID = "1%s" % nID
+                nID = random.choices(["1", "2"], weights = [25, 1])[0] + nID
                 pageNumber = 1
             nURL = "https://i.nhentai.net/galleries/" + nID + "/" + str(pageNumber) + ".jpg"
             try:
