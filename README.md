@@ -38,3 +38,4 @@ The script writes the following information into a log (`nDownloaded.log`):
 ### Screenshots
 ![ncustom :^)](images/ncustom.png)
 ![ndownloader :^)](images/ndownloader.png)
+![ndownloader - gif :^)](images/ndownloader.gif)
