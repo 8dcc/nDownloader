@@ -1,5 +1,13 @@
-# nDownloader
-Nothing to see here again... Now optimized. It is a python script that downloads lots of hentai images based on random ids from [nhentai](https://nhentai.net).
+<div align=center>
+  <h1>nDownloader</h1>
+  <b>Nothing to see here again... Now optimized.</b><br><br>
+    <a href="https://github.com/r4v10l1/nDownloader/network/members"><img src="https://img.shields.io/github/forks/r4v10l1/nDownloader.svg?style=for-the-badge&logo=naver&color=ed2553&logoColor=ed2553" alt="Forks"></a>
+      <a href="https://github.com/r4v10l1/nDownloader/stargazers"><img src="https://img.shields.io/github/stars/r4v10l1/nDownloader.svg?style=for-the-badge&logo=naver&color=ed2553&logoColor=ed2553" alt="Stars"></a>
+</div>
+
+#
+
+It is a python script that downloads lots of hentai images based on random ids from [nhentai](https://nhentai.net).
 
 * With `nDownloder.py`, it writes one line per request. Use `nDownloader_clean.py` for a much cleaner look.
 * To download a single id, use [`nCustom/nCustom.py`](https://github.com/r4v10l1/nDownloader/blob/main/nCustom/nCustom.py). You can use the image id (7 digits) or the sauce (6 digits).
